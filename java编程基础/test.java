@@ -4,9 +4,27 @@ public class test{
 	//int a = 20;//成员变量，在类里边定义的变量
 	public static void main(String[]args){
 		
+		//常量
+		//1.  "abc" 字符串常量
+		//2.  25    整型常量
+		//3.  2.5  浮点数常量
+		//4.  'a'	字符常量
+		//5.   true、false 布尔常量
+		//6.  null 空常量
+		/*
+		System.out.println("abc");
+		System.out.println("");
+		System.out.println(20);
+		System.out.println(3.14);
+		System.out.println('a');
+		System.out.println(true);
+		//System.out.println(null); //空常量不能直接打印输出
+		*/
+		
 		//int num=10;//局部变量，在方法里边定义
 		//System.out.println("num="+num);
 		//System.out.println(num);  //对比两种输出方式
+		
 		//8种基本数据类型
 		//布尔型    boolean   不定值（占用内存）     true，false    默认false
 		//字节型    byte         1                  （-128~127）        0
@@ -31,6 +49,9 @@ public class test{
 		//s+=1; //不会报错
 		System.out.println(s);
 		*/
+		
+		//引用数据类型：字符串，数组，类，接口。Lambda
+		
 		
 		//保留关键字：const 和 goto
 		
@@ -327,7 +348,7 @@ public class test{
 	* * * * * * * * *
 	    
 		*/
-		
+		/*
 		int i=0;
 		for(i=0;i<5;i++)
 		{
@@ -345,8 +366,9 @@ public class test{
 			System.out.println();
 		}
 		//以上图形控制台输出格式正确（notepad++格式有误）
-		
+		*/
 	}
+	
 }
 
 
