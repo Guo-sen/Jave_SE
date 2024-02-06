@@ -345,14 +345,134 @@ class Person implements IRun,IEat{
 
 //例如：用父类的引用指向子类对象（用大的类型去接收小的类型，向上转型、自动转换）
 
+import java.util.concurrent.Callable;
 
+public class test {
+    public static void main(String[] args) {
+        HomeChicken hc=new HomeChicken("小家鸡");
+        hc.eat();
+        YeChicken yc=new YeChicken("小野鸡");
+        yc.eat();
+        //以上写法没有体现出来父类鸡的作用
 
+        //用父类的引用指向子类对象（用大的类型去接收小的类型，向上转型、自动转换）
+       // Chicken hc1=new HomeChicken("小家家鸡");
+       // hc1.eat();
+       // eat(hc1);
+        //hc1=yc;
+       // eat(hc1);
+        //hc1.eat();
+        //以上叫做多态，hc1可以表示家鸡也可以表示野鸡，这就表示出来这个对象具有两种形态
+
+        Chicken jjj=new ScChicken("尖椒鸡");
+        eat(jjj);
+    }
+
+    //这样写方法就叫抽象的写法（粒度），面向抽象编程，好处是即使未来出现了新的鸡的种类，那这个方法还是可以运行的
+    public static void eat(Chicken c){
+        System.out.println("鸡吃饭");
+        c.eat();
+       //强制类型转换,向下转型
+        System.out.println("-----------------");
+
+        //父类里边没有song方法，所以调用之前需要把这个父类引用强制类型转换
+        ScChicken tmp=(ScChicken) c;
+        tmp.song();
+    }
+
+}
+//鸡类
+
+abstract class Chicken{
+    private String name;
+    public Chicken(){}
+    public Chicken(String name){
+        this.name=name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public abstract void eat();
+}
+
+//家鸡
+class HomeChicken extends Chicken{
+    public HomeChicken(String name){
+        super(name);
+    }
+
+    @Override
+    public void eat() {
+        System.out.println("我是"+this.getName()+"我爱吃米");
+    }
+}
+
+//野鸡
+class YeChicken extends Chicken{
+    public YeChicken(String name){
+        super(name);
+    }
+
+    @Override
+    public void eat() {
+        System.out.println("我是"+this.getName()+"我爱吃虫子");
+    }
+}
+
+//尖椒鸡
+class ScChicken extends Chicken{
+    public ScChicken(String name){
+        super(name);
+    }
+
+    @Override
+    public void eat() {
+        System.out.println("我是"+this.getName()+" 不吃饭");
+    }
+    public void song(){
+        System.out.println("唧唧复唧唧，我是尖椒鸡");
+    }
+}
+/*
 //结论：在编程时针对抽象类型的编写代码，称为面向抽象编程（或面向接口编程）
 //父类通常都定义为抽象类、接口
 
+//对象的多态性：对象的多态性是从继承关系中的多个类而来，
+//向上转型：将子类实例转为父类引用
+//格式： 父类 父类对象=子类实例；//自动转换
+//以基本数据类型操作为例：int i = 'a';因为char的容量小所以可以自动完成转换
 
+//向下转换：将父类实例转化为子类实例
+//格式： 子类 子类对象 = （子类）父类实例;//强制转换
+//以基本数据类型为例：char c = （char）97;
+//因为4个字节比char的2个字节要大，所以需要强制完成
 
+//1.方法的重载和重写就是方法的多态性表现
+//2.多个子类就是父类中的多种形态
+//3.父类引用可以指向子类对象，自动转换
+//4.子类对象指向父类引用需要强制转换
+//5.实际开发过程中尽量使用父类引用（有利于扩展）
 
+ */
+
+//instanceof关键字
+//instanceof是用于检查对象是否为指定的类型，通常在把父类引用强制转换为子类时使用，以避免发生类型转换异常（ClassCastException）
+//语法格式如下
+//对象 instanceof 类型   //会返回boolean类型
+//示例
+/*
+if(homeChicken instanceof Chicken){
+    //.....
+    //.....
+        }
+
+ */
+//该语句一般用于判断一个对象是否是某个类的实例，是则返回true，否则返回false
 
 
 /*
