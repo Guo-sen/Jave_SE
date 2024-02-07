@@ -344,7 +344,7 @@ class Person implements IRun,IEat{
 //2.对象的多态性
 
 //例如：用父类的引用指向子类对象（用大的类型去接收小的类型，向上转型、自动转换）
-
+/*
 import java.util.concurrent.Callable;
 
 public class test {
@@ -356,12 +356,12 @@ public class test {
         //以上写法没有体现出来父类鸡的作用
 
         //用父类的引用指向子类对象（用大的类型去接收小的类型，向上转型、自动转换）
-       // Chicken hc1=new HomeChicken("小家家鸡");
-       // hc1.eat();
-       // eat(hc1);
-        //hc1=yc;
-       // eat(hc1);
-        //hc1.eat();
+       Chicken hc1=new HomeChicken("小家家鸡");
+        hc1.eat();
+        eat(hc1);
+        hc1=yc;
+        eat(hc1);
+        hc1.eat();
         //以上叫做多态，hc1可以表示家鸡也可以表示野鸡，这就表示出来这个对象具有两种形态
 
         Chicken jjj=new ScChicken("尖椒鸡");
@@ -376,8 +376,13 @@ public class test {
         System.out.println("-----------------");
 
         //父类里边没有song方法，所以调用之前需要把这个父类引用强制类型转换
-        ScChicken tmp=(ScChicken) c;
-        tmp.song();
+        //instanceof是用于检查对象是否为指定的类型，通常在把父类引用强制转换为子类时使用，
+        //以避免发生类型转换异常（ClassCastException）
+        if(c instanceof ScChicken){//对象本身的类和对象的父类型都可以通过检查
+            ScChicken tmp=(ScChicken) c; //大的类型转换成小的类型，强制类型转换
+            tmp.song();
+        }
+
     }
 
 }
@@ -438,6 +443,7 @@ class ScChicken extends Chicken{
         System.out.println("唧唧复唧唧，我是尖椒鸡");
     }
 }
+*/
 /*
 //结论：在编程时针对抽象类型的编写代码，称为面向抽象编程（或面向接口编程）
 //父类通常都定义为抽象类、接口
@@ -460,7 +466,7 @@ class ScChicken extends Chicken{
 
  */
 
-//instanceof关键字
+//instanceof关键字(上边有例子)
 //instanceof是用于检查对象是否为指定的类型，通常在把父类引用强制转换为子类时使用，以避免发生类型转换异常（ClassCastException）
 //语法格式如下
 //对象 instanceof 类型   //会返回boolean类型
@@ -473,6 +479,78 @@ if(homeChicken instanceof Chicken){
 
  */
 //该语句一般用于判断一个对象是否是某个类的实例，是则返回true，否则返回false
+
+
+//父类的设计法则：通过instanceof关键字，我们可以很方便的检查对象的类型，但是一个父类的子类过多，这样的判断
+//还是显得很繁琐，那么如何去设计一个父类呢？
+//1.父类通常情况下都优先设计成接口类或抽象类，其中优先考虑接口，如接口不能满足才考虑抽象类
+//2.一个具体的类尽可能不去继承另一个类，这样的好处是无需检查对象是否为父类的对象
+
+
+
+//抽象类的应用——模板方法模式（Templete Method）
+//模板方法模式：定义一个操作中的算法的骨架，而将一些可变部分的实现延迟到子类中。模板方法模式使得子类可以不改变一个
+//算法的结构即可重新定义该算法的某些特定的步骤
+
+/*
+public class test {
+    public static void main(String[] args) {
+        shopManager user=new shopManager();
+        user.action("user","add");
+        System.out.println("---------------------------");
+        shopManager manager=new shopManager();
+        manager.action("admin","add");
+
+        //对于shopManager来说不需要关系用户有没有权限，只需要专注于自己的事情就好了（添加，删除）
+        //对于验证操作，移到baseManager了
+        //excute没有在父类中实现，延迟在子类中实现了
+    }
+}
+abstract class baseManager{
+    public void action(String name,String method){
+        if("admin".equals(name)){
+
+            excute(method);
+        }else{
+            System.out.println("你没有权限操作");
+        }
+    }
+    public abstract void excute(String method);
+
+}
+class shopManager extends baseManager{
+
+    public void excute(String method){
+
+
+        //执行添加或者删除操作时需要验证是否登录了（是否有权限）,当类很多时，每次都要验证，所以直接写一个baseManager，让它来继承
+        if("add".equals(method)){
+            System.out.println("执行了添加操作");
+        } else if ("del".equals(method)) {
+            System.out.println("执行了删除操作");
+
+        }
+
+    }
+
+}
+
+
+*/
+
+
+//接口的应用--策略模式（Strategy Pattern），定义了一系列的算法，将每一种算法封装起来并且可以相互替换使用
+//策略模式让算法独立于使用它的客户应用而独立变化
+
+//OO设计原则：
+//1.面向接口编程（面向抽象编程）
+//2.封装变化
+//3.多用组合，少用继承
+//一个接口有多个实现，不同的实现独立封装，可以按运行时需求相互替换，可维护性就强了
+//新增接口实现也不会影响其他实现类
+
+
+
 
 
 /*
