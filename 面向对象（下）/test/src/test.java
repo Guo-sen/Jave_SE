@@ -548,6 +548,223 @@ class shopManager extends baseManager{
 //3.多用组合，少用继承
 //一个接口有多个实现，不同的实现独立封装，可以按运行时需求相互替换，可维护性就强了
 //新增接口实现也不会影响其他实现类
+/*
+public class test {
+    public static void main(String[] args) {
+        BaseService user=new UserService();
+        //user.setISave(new FileSave());
+        user.setISave(new NetSave());
+        //把可变的行为抽象出来，这样写的好处是这些行为可以在真正使用时相互替换
+        user.add("hello world");
+    }
+}
+
+
+interface ISave{
+    public void save(String data);
+}
+//把可变的行为抽象出来，定义一系列的算法
+class FileSave implements ISave{
+    @Override
+    public void save(String data) {
+        System.out.println("正在把数据保存到文件中..."+data);
+    }
+}
+class NetSave implements ISave{
+    @Override
+    public void save(String data) {
+        System.out.println("把数据保存在网络上..."+data);
+    }
+}
+
+abstract class BaseService{
+    private ISave iSave; //把这个接口作为这个类的属性
+    public void setISave(ISave iSave){ //然后给这个类提供一个构造方法或者set方法
+        this.iSave=iSave;               //在使用的时候，把那个对象和这个接口绑定起来
+    }
+    public void add(String data){
+        System.out.println("检查数据合法性");
+        iSave.save(data);
+        System.out.println("数据保存完毕");
+    }
+}
+
+class UserService extends BaseService{
+
+}
+ */
+
+
+
+
+
+//Object类
+//Obeject类是类层次结构的根类
+//每个类都使用Object作为超类，所有对象（包括数组）都实现这个类的方法
+//所有类都是Object的子类
+//所以所有类天生就有toString（），hashCode（），equals（）等这些从Object类中继承下来的方法
+
+/*
+public class test {
+    public static void main(String[] args) {
+        //通常，toString方法会返回一个“以文本表示此对象的字符串(类似于Student@73035e27)”。结果应该是一个简明且易于读懂的信息表达式
+        //建议所有子类都重写此方法
+        Student s=new Student("张三",18,22);
+        System.out.println(s.toString());
+        //System.out.println(s);//直接打印对象的名字也会自动调用toString方法
+
+        //public boolean equals(Object obj)
+        //指其它某个对象是否与此对象”相等“，equals方法在非空对象引用上实现相等关系：
+        //自反性 对于任何非空引用值x，x.equals（x）都要返回true
+        //对称性 对于任何非空引用值x和y，当且仅当y.equals（x）返回true时，x.equals（y）才返回true
+        //传递性 对于任何非空引用值x、y和z，如果x.equals（y）返回true，并且y.equals（z）返回true，那么x.equals（z）应返回true
+        //一致性 对于任何非空引用值x和y，多次调用x.equals（y）始终返回true或者始终返回false，前提是对象上equals比较中所用的信息没有被修改
+        //对于任何非空引用值x，x.equals（null）都应该返回false。
+        //Object类的equals方法实现对象上差别可能性最大的相等关系；即对于任何非空引用值x和y，当且仅当x和y引用同一个对象时候此方法才返回true（x==y具有值true）
+        //注意当此方法被重写时，通常有必要重写hashCode方法的常规协定，该协定声明相等的对象必须具有相等的哈希码
+
+        Student s1 = new Student("张三",18,22);
+        System.out.println(s1.equals(s));
+        Student s2=s1;
+        System.out.println(s2.equals(s1));
+        //s1和s虽然属性相同但是还是两个对象，实际输出false，当实际业务中需要把s1和s看成1个对象，需要重写equals方法
+
+
+        //protected void finalize()throws Throwable
+        //当垃圾回收器确定不存在对该对象的更多引用时，由对象的垃圾回收器调用此方法。子类重写finalize方法，以配置系统资源或执行其它清除
+
+        //public final Class<?>getClass()
+        //返回此Object的运行时类
+        System.out.println(s1.getClass()==s.getClass());
+    }
+}
+
+class Student{
+    private String name;
+    private int sid;
+    private int age;
+    public Student(){}
+    public Student(String name,int sid,int age){
+        this.name=name;
+        this.age=age;
+        this.sid=sid;
+    }
+    //重写Object中继承下来的toString方法
+    public String toString(){
+        return " sid="+sid+" name="+name+" age="+age;
+    }
+    //重写equals方法，来实现两个对象的比较
+    public boolean equals(Object obj){
+        if(this==obj){
+            return  true;
+        }
+        if(obj instanceof Student){
+            Student s = (Student)obj;
+            if(!this.name.equals(s.name)){
+                return false;
+            }
+            if (this.age!=s.age) {
+                return false;
+            }
+            if (this.sid==s.sid) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+*/
+
+
+
+
+
+//简单工厂模式
+//简单工厂模式是由一个工厂对象决定创建出哪一种产品的实例。简单工厂模式是工厂模式家族中最简单实用的模式
+
+//假设没有简单工厂模式
+/*
+public class test {
+    public static void main(String[] args) {
+        Product pro=new Phone();  //test是测试类，Phone和Computer是被使用的类
+                                 //这种写法test类和Phone类相互依赖，如果某一天这个Phone没有了，这种写法会报错
+                                //使用者和被使用者，两者之间，耦合，产生了依赖
+        pro.work();
+
+    }
+}
+interface Product{
+    public void work();//开始工作
+}
+
+class Phone implements Product{
+    @Override
+    public void work() {
+        System.out.println("手机开始工作...");
+    }
+}
+
+class Computer implements Product{
+    @Override
+    public void work() {
+        System.out.println("电脑开始工作...");
+    }
+}
+*/
+
+
+//使用工厂模式降低耦合
+/*
+public class test {
+    public static void main(String[] args) {
+       Product phone=ProductFactory.getProduct("Phone");
+       if(phone!=null){
+           phone.work();
+       }
+    }
+}
+
+class ProductFactory{
+    public static Product getProduct(String name){
+        if("Phone".equals(name)){
+            return new Phone();
+        }else if("Computer".equals(name)){
+            return new Computer();
+        }
+        return null;
+    }
+}
+interface Product{
+    public void work();//开始工作
+}
+
+class Phone implements Product{
+    @Override
+    public void work() {
+        System.out.println("手机开始工作...");
+    }
+}
+
+class Computer implements Product{
+    @Override
+    public void work() {
+        System.out.println("电脑开始工作...");
+    }
+}
+*/
+
+
+
+
+//静态代理模式
+//代理模式（Proxy）：为其它对象提供一种代理以控制对这个对象的访问
+//代理模式说白了就是“真是对象的代表”，在访问对象时，引入一定程度的间接性，因为这种间接性可以附加多种用途。
+//代理模式就是通过代理对象来达到控制访问对象的目的
+
+
+
+
 
 
 
